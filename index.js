@@ -1,6 +1,6 @@
 var pieces = document.querySelectorAll(".piece");
 const squares = document.querySelectorAll(".square");
-
+// just some comment
 let selectedpiece;
 let moves = [];
 let whiteonmove = true;
@@ -59,15 +59,14 @@ function dragLeave () {
 
 function dragDrop () {
     this.className = "square";
+    let lastmove = [];
     
+    for (let i = 0; i <pieces.length; i++) {
+        lastmove.push([pieces[i].parentElement.getAttribute("column"), pieces[i].parentElement.getAttribute("row")])
+    }
     
     if (canPlayMove(selectedpiece, this, moves)){
-        let lastmove = [];
         let lastonmovewhite = whiteonmove;
-        
-        for (let i = 0; i <pieces.length; i++) {
-            lastmove.push([pieces[i].parentElement.getAttribute("column"), pieces[i].parentElement.getAttribute("row")])
-        }
         
         if (whiteonmove){
             if (!selectedpiece.firstChild.className.includes("w")){
