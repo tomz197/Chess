@@ -1,9 +1,8 @@
 function canPlayMove(selected, landing, moves) {
-    let currentRow = parseInt(selected.parentElement.getAttribute("row"));
-    let currentColumn = parseInt(selected.parentElement.getAttribute("column"));
-    let landingRow = parseInt(landing.getAttribute("row"));
-    let landingColumn = parseInt(landing.getAttribute("column"));    
-    let returnValue = false;
+    const currentRow = parseInt(selected.parentElement.getAttribute("row"));
+    const currentColumn = parseInt(selected.parentElement.getAttribute("column"));
+    const landingRow = parseInt(landing.getAttribute("row"));
+    const landingColumn = parseInt(landing.getAttribute("column"));    
 
     if (selected.firstChild.className == "wp")
     {
@@ -194,6 +193,127 @@ function canPlayMove(selected, landing, moves) {
     }
     if (selected.firstChild.className == "wk" || selected.firstChild.className == "bk" )
     {
+        if (Math.abs(currentColumn - landingColumn) == 2 && whiteonmove && cancastle[0][1] && landingRow == 1){
+            whiteonmove = false;
+            if (landingColumn < currentColumn && cancastle[0][0]){
+                let cancontinue = true;
+                for (let i = 1; i < 4; i++)
+                if (document.querySelector(`[column="${currentColumn-i}"][row="1"]`).innerHTML != "")
+                cancontinue = false;
+
+                if (cancontinue && !isCheck()){
+                    document.querySelector(`[column="4"][row="1"]`).innerHTML = selected.outerHTML;
+                    document.querySelector(`[column="5"][row="1"]`).innerHTML = "";
+                    if (!isCheck()){
+                        landing.innerHTML = selected.outerHTML;
+                        document.querySelector(`[column="4"][row="1"]`).innerHTML = "";
+                        if (!isCheck()){
+                            document.querySelector(`[column="4"][row="1"]`).innerHTML = document.querySelector(`[column="1"][row="1"]`).innerHTML;
+                            document.querySelector(`[column="1"][row="1"]`).innerHTML = "";
+                            reloadPieces()
+                            return true;
+                        }else{
+                            landing.innerHTML = "";
+                            document.querySelector(`[column="5"][row="1"]`).innerHTML = selected.outerHTML;
+                        }
+                    }else{
+                        document.querySelector(`[column="5"][row="1"]`).innerHTML = selected.outerHTML;
+                        document.querySelector(`[column="4"][row="1"]`).innerHTML = "";
+                    }
+                    reloadPieces()
+                }
+            }
+            if (landingColumn > currentColumn && cancastle[0][2]){
+                let cancontinue = true;
+                for (let i = 1; i < 3; i++)
+                    if (document.querySelector(`[column="${currentColumn+i}"][row="1"]`).innerHTML != "")
+                        cancontinue = false;
+
+                if (cancontinue && !isCheck()){
+                    document.querySelector(`[column="6"][row="1"]`).innerHTML = selected.outerHTML;
+                    document.querySelector(`[column="5"][row="1"]`).innerHTML = "";
+                    if (!isCheck()){
+                        landing.innerHTML = selected.outerHTML;
+                        document.querySelector(`[column="6"][row="1"]`).innerHTML = "";
+                        if (!isCheck()){
+                            document.querySelector(`[column="6"][row="1"]`).innerHTML = document.querySelector(`[column="8"][row="1"]`).innerHTML;
+                            document.querySelector(`[column="8"][row="1"]`).innerHTML = "";
+                            reloadPieces()
+                            return true;
+                        }else{
+                            landing.innerHTML = "";
+                            document.querySelector(`[column="5"][row="1"]`).innerHTML = selected.outerHTML;
+                        }
+                    }else{
+                        document.querySelector(`[column="5"][row="1"]`).innerHTML = selected.outerHTML;
+                        document.querySelector(`[column="6"][row="1"]`).innerHTML = "";
+                    }
+                    reloadPieces()
+                }
+            }
+            whiteonmove = true;
+        }
+        if (Math.abs(currentColumn - landingColumn) == 2 && !whiteonmove && cancastle[1][1] && landingRow == 8){
+            whiteonmove = true;
+            if (landingColumn < currentColumn && cancastle[1][0]){
+                let cancontinue = true;
+                for (let i = 1; i < 4; i++)
+                    if (document.querySelector(`[column="${currentColumn-i}"][row="8"]`).innerHTML != "")
+                        cancontinue = false;
+
+                if (cancontinue && !isCheck()){
+                    document.querySelector(`[column="4"][row="8"]`).innerHTML = selected.outerHTML;
+                    document.querySelector(`[column="5"][row="8"]`).innerHTML = "";
+                    if (!isCheck()){
+                        landing.innerHTML = selected.outerHTML;
+                        document.querySelector(`[column="4"][row="8"]`).innerHTML = "";
+                        if (!isCheck()){
+                            document.querySelector(`[column="4"][row="8"]`).innerHTML = document.querySelector(`[column="1"][row="8"]`).innerHTML;
+                            document.querySelector(`[column="1"][row="8"]`).innerHTML = "";
+                            reloadPieces()
+                            return true;
+                        }else{
+                            landing.innerHTML = "";
+                            document.querySelector(`[column="5"][row="8"]`).innerHTML = selected.outerHTML;
+                        }
+                    }else{
+                        document.querySelector(`[column="5"][row="8"]`).innerHTML = selected.outerHTML;
+                        document.querySelector(`[column="4"][row="8"]`).innerHTML = "";
+                    }
+                    reloadPieces()
+                }
+            }
+            if (landingColumn > currentColumn && cancastle[1][2]){
+                let cancontinue = true;
+                for (let i = 1; i < 3; i++)
+                    if (document.querySelector(`[column="${currentColumn+i}"][row="8"]`).innerHTML != "")
+                        cancontinue = false;
+
+                if (cancontinue && !isCheck()){
+                    document.querySelector(`[column="6"][row="8"]`).innerHTML = selected.outerHTML;
+                    document.querySelector(`[column="5"][row="8"]`).innerHTML = "";
+                    if (!isCheck()){
+                        landing.innerHTML = selected.outerHTML;
+                        document.querySelector(`[column="6"][row="8"]`).innerHTML = "";
+                        if (!isCheck()){
+                            document.querySelector(`[column="6"][row="8"]`).innerHTML = document.querySelector(`[column="8"][row="8"]`).innerHTML;
+                            document.querySelector(`[column="8"][row="8"]`).innerHTML = "";
+                            reloadPieces()
+                            return true;
+                        }else{
+                            landing.innerHTML = "";
+                            document.querySelector(`[column="5"][row="8"]`).innerHTML = selected.outerHTML;
+                        }
+                    }else{
+                        document.querySelector(`[column="5"][row="8"]`).innerHTML = selected.outerHTML;
+                        document.querySelector(`[column="6"][row="8"]`).innerHTML = "";
+                    }
+                    reloadPieces()
+                }
+            }
+            whiteonmove = false;
+        }
+
         if (Math.abs(currentRow - landingRow) > 1 || Math.abs(currentColumn - landingColumn) > 1)
             return false;
 
@@ -211,9 +331,9 @@ function canPlayMove(selected, landing, moves) {
 }
 
 function isCheck() {
+    const localpieces = document.querySelectorAll(".piece");
     const wk = document.querySelector(".wk").parentElement;
     const bk = document.querySelector(".bk").parentElement;
-    const localpieces = document.querySelectorAll(".piece");
 
     let king;
     if (!whiteonmove){
@@ -222,7 +342,7 @@ function isCheck() {
     
     for (let i = 0; i < localpieces.length; i++){
         if (canPlayMove(localpieces[i], king.parentElement, moves))
-        return true;
+            return true;
     }
     return false;
 }

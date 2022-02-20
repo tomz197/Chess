@@ -3,7 +3,7 @@ const resetButton = document.querySelector("#boardResetButton")
 resetButton.addEventListener("click", FEN)
 
 const FENnotation = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
-//const FENnotation = "k7/8/8/3pK3/8/8/8/8";
+//const FENnotation = "r2qk2r/8/8/8/8/8/8/R2QK2R";
 
 window.onload
 
