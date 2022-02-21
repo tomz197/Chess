@@ -41,7 +41,8 @@ body {
 }
 
 /* .hold {
-} */
+  display: none;
+}  */
 .hovered {
   border: solid 5px black;
 }

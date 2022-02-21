@@ -1,4 +1,7 @@
 function canPlayMove(selected, landing, moves) {
+    if (whiteonmove && !selected.firstChild.className.includes("w") || !whiteonmove && selected.firstChild.className.includes("w"))
+        return false;
+
     const currentRow = parseInt(selected.parentElement.getAttribute("row"));
     const currentColumn = parseInt(selected.parentElement.getAttribute("column"));
     const landingRow = parseInt(landing.getAttribute("row"));
