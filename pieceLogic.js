@@ -1,334 +1,293 @@
 function canPlayMove(selected, landing, moves) {
     if (whiteonmove && !selected.firstChild.className.includes("w") || !whiteonmove && selected.firstChild.className.includes("w"))
         return false;
+    if (landing.innerHTML != "")
+        if (whiteonmove && landing.firstChild.firstChild.className.includes("w") || !whiteonmove && !landing.firstChild.firstChild.className.includes("w"))
+            return false;
 
-    const currentRow = parseInt(selected.parentElement.getAttribute("row"));
-    const currentColumn = parseInt(selected.parentElement.getAttribute("column"));
-    const landingRow = parseInt(landing.getAttribute("row"));
-    const landingColumn = parseInt(landing.getAttribute("column"));    
+    //current row
+    const cR = parseInt(selected.parentElement.getAttribute("row"));
+    //current column
+    const cC = parseInt(selected.parentElement.getAttribute("column"));
+    //landing row
+    const lR = parseInt(landing.getAttribute("row"));
+    //landing column
+    const lC = parseInt(landing.getAttribute("column"));    
 
     if (selected.firstChild.className == "wp")
     {
-        if (landingRow == 4 && currentRow < 4 && document.querySelector("[column=\""+currentColumn+"\"][row=\""+ (currentRow+1) +"\"]").innerHTML == "" && landingColumn == currentColumn && landing.innerHTML == "")
-            return true;
-        if (landingRow == currentRow+1 && landingColumn == currentColumn && landing.innerHTML == "")
-            return true;
-        if (landingRow == currentRow+1 && (landingColumn == currentColumn-1 || landingColumn == currentColumn+1) && landing.innerHTML != "")
-            if (!landing.firstChild.firstChild.className.includes("w"))
+        if (lC == cC && landing.innerHTML == ""){
+            if (lR == 4 && cR == 2)
                 return true;
+            if (lR == cR+1)
+                return true;
+        }
+        if (lR == cR+1 && (lC == cC-1 || lC == cC+1) && landing.innerHTML != "")
+            return true;
         if (moves.length > 2)
-            if (moves[moves.length-1][0] == 7 && moves[moves.length-1][2] == 5 && currentRow == 5 && landingRow == 6 && moves[moves.length-1][4].includes("p"))
-                if (moves[moves.length-1][3] == currentColumn-1 && landingColumn == currentColumn-1){
-                    document.querySelector("[column=\""+ (currentColumn-1) +"\"][row=\""+ currentRow +"\"]").innerHTML = "";
+            if (moves[moves.length-1][0] == 7 && moves[moves.length-1][2] == 5 && cR == 5 && lR == 6 && moves[moves.length-1][4].includes("p"))
+                if (moves[moves.length-1][3] == cC-1 && lC == cC-1){
+                    selectSquare(cC-1, cR).innerHTML = "";
                     return true;
-                }else if (moves[moves.length-1][3] == currentColumn+1 && landingColumn == currentColumn+1){
-                    document.querySelector("[column=\""+ (currentColumn+1) +"\"][row=\""+ currentRow +"\"]").innerHTML = "";
+                }else if (moves[moves.length-1][3] == cC+1 && lC == cC+1){
+                    selectSquare(cC+1, cR).innerHTML = "";
                     return true;
                 }
     }
     if (selected.firstChild.className == "bp")
     {
-        if (landingRow == 5 && currentRow > 5 && document.querySelector("[column=\""+currentColumn+"\"][row=\""+ (currentRow-1) +"\"]").innerHTML == "" && landingColumn == currentColumn && landing.innerHTML == "")
-            return true;
-        if (landingRow == currentRow-1 && landingColumn == currentColumn && landing.innerHTML == "")
-            return true;
-        if (landingRow == currentRow-1 && (landingColumn == currentColumn-1 || landingColumn == currentColumn+1) && landing.innerHTML != "")
-            if (landing.firstChild.firstChild.className.includes("w"))
+        if (lC == cC && landing.innerHTML == ""){
+            if (lR == 5 && cR == 7)
                 return true;
+            if (lR == cR-1)
+                return true;
+        }
+        if (lR == cR-1 && (lC == cC-1 || lC == cC+1) && landing.innerHTML != "")
+            return true;
         if (moves.length > 2)
-            if (moves[moves.length-1][0] == 2 && moves[moves.length-1][2] == 4 && currentRow == 4 && landingRow == 3 && moves[moves.length-1][4].includes("p"))
-                if (moves[moves.length-1][3] == currentColumn-1 && landingColumn == currentColumn-1){
-                    document.querySelector("[column=\""+ (currentColumn-1) +"\"][row=\""+ currentRow +"\"]").innerHTML = "";
+            if (moves[moves.length-1][0] == 2 && moves[moves.length-1][2] == 4 && cR == 4 && lR == 3 && moves[moves.length-1][4].includes("p"))
+                if (moves[moves.length-1][3] == cC-1 && lC == cC-1){
+                    selectSquare(cC-1, cR).innerHTML = "";
                     return true;
-                }else if (moves[moves.length-1][3] == currentColumn+1 && landingColumn == currentColumn+1){
-                    document.querySelector("[column=\""+ (currentColumn+1) +"\"][row=\""+ currentRow +"\"]").innerHTML = "";
+                }else if (moves[moves.length-1][3] == cC+1 && lC == cC+1){
+                    selectSquare(cC+1, cR).innerHTML = "";
                     return true;
                 }
     }
     if (selected.firstChild.className == "wb" || selected.firstChild.className == "bb" )
     {
-        if (Math.abs(currentRow - landingRow) == Math.abs(currentColumn - landingColumn)){
-            for (let i = 1; i < Math.abs(currentRow - landingRow); i++){
-                if (currentRow>landingRow && currentColumn>landingColumn){
-                    if (document.querySelector("[column=\""+ (currentColumn-i) +"\"][row=\""+ (currentRow-i) +"\"]").innerHTML != "")
+        if (Math.abs(cR - lR) == Math.abs(cC - lC)){
+            for (let i = 1; i < Math.abs(cR - lR); i++){
+                if (cR>lR && cC>lC)
+                    if (selectSquare(cC-i, cR-i).innerHTML != "")
                         return false;
-                }
-                if (currentRow<landingRow && currentColumn<landingColumn){
-                    if (document.querySelector("[column=\""+ (currentColumn+i) +"\"][row=\""+ (currentRow+i) +"\"]").innerHTML != "")
+                if (cR<lR && cC<lC)
+                    if (selectSquare(cC+i, cR+i).innerHTML != "")
                         return false;
-                }
-                if (currentRow<landingRow && currentColumn>landingColumn){
-                    if (document.querySelector("[column=\""+ (currentColumn-i) +"\"][row=\""+ (currentRow+i) +"\"]").innerHTML != "")
+                if (cR<lR && cC>lC)
+                    if (selectSquare(cC-i, cR+i).innerHTML != "")
                         return false;
-                }
-                if (currentRow>landingRow && currentColumn<landingColumn){
-                    if (document.querySelector("[column=\""+ (currentColumn+i) +"\"][row=\""+ (currentRow-i) +"\"]").innerHTML != "")
+                if (cR>lR && cC<lC)
+                    if (selectSquare(cC+i, cR-i).innerHTML != "")
                         return false;
-                }
             }
-
-            if (landing.innerHTML != "" && selected.firstChild.className == "wb")
-                if (!landing.firstChild.firstChild.className.includes("w"))
-                    return true;
-            if (landing.innerHTML != "" && selected.firstChild.className == "bb")
-                if (landing.firstChild.firstChild.className.includes("w"))
-                    return true;
             if (landing.innerHTML == "")
                 return true;
         }
     }
     if (selected.firstChild.className == "wr" || selected.firstChild.className == "br" )
     {
-        if (currentRow != landingRow && currentColumn != landingColumn)
+        if (cR != lR && cC != lC)
             return false;
 
-        if (currentColumn == landingColumn)
-            for (let i = 1; i < Math.abs(currentRow - landingRow); i++){
-                if (currentRow>landingRow){
-                    if (document.querySelector("[column=\""+ (currentColumn) +"\"][row=\""+ (currentRow-i) +"\"]").innerHTML != "")
+        if (cC == lC)
+            for (let i = 1; i < Math.abs(cR - lR); i++){
+                if (cR>lR)
+                    if (selectSquare(cC, cR-i).innerHTML != "")
                         return false;
-                }
-                if (currentRow<landingRow){
-                    if (document.querySelector("[column=\""+ (currentColumn) +"\"][row=\""+ (currentRow+i) +"\"]").innerHTML != "")
+                if (cR<lR)
+                    if (selectSquare(cC, cR+i).innerHTML != "")
                         return false;
-                }
             }
-        if (currentRow == landingRow)
-            for (let i = 1; i < Math.abs(currentColumn - landingColumn); i++){
-                if (currentColumn>landingColumn){
-                    if (document.querySelector("[column=\""+ (currentColumn-i) +"\"][row=\""+ (currentRow) +"\"]").innerHTML != "")
+        if (cR == lR)
+            for (let i = 1; i < Math.abs(cC - lC); i++){
+                if (cC>lC)
+                    if (selectSquare(cC-i, cR).innerHTML != "")
                         return false;
-                }
-                if (currentColumn<landingColumn){
-                    if (document.querySelector("[column=\""+ (currentColumn+i) +"\"][row=\""+ (currentRow) +"\"]").innerHTML != "")
+                if (cC<lC)
+                    if (selectSquare(cC+i, cR).innerHTML != "")
                         return false;
-                }
             }
-        
-        if (landing.innerHTML != "" && selected.firstChild.className == "wr")
-            if (!landing.firstChild.firstChild.className.includes("w"))
-                return true;
-        if (landing.innerHTML != "" && selected.firstChild.className == "br")
-            if (landing.firstChild.firstChild.className.includes("w"))
-                return true;
-        if (landing.innerHTML == "")
-            return true;
+        return true;
     }
     if (selected.firstChild.className == "wn" || selected.firstChild.className == "bn" )
     {
-        if (!((landingColumn == currentColumn+2 || landingColumn == currentColumn-2) && (landingRow == currentRow+1 || landingRow == currentRow-1) || 
-        (landingColumn == currentColumn+1 || landingColumn == currentColumn-1) && (landingRow == currentRow+2 || landingRow == currentRow-2)))
+        if (!((lC == cC+2 || lC == cC-2) && (lR == cR+1 || lR == cR-1) || 
+        (lC == cC+1 || lC == cC-1) && (lR == cR+2 || lR == cR-2)))
             return false;
-
-        if (landing.innerHTML != "" && selected.firstChild.className == "wn")
-            if (!landing.firstChild.firstChild.className.includes("w"))
-                return true;
-        if (landing.innerHTML != "" && selected.firstChild.className == "bn")
-            if (landing.firstChild.firstChild.className.includes("w"))
-                return true;
-        if (landing.innerHTML == "")
-            return true;
+        return true;
     }
     if (selected.firstChild.className == "wq" || selected.firstChild.className == "bq" )
     {
-        if (Math.abs(currentRow - landingRow) == Math.abs(currentColumn - landingColumn)){
-            for (let i = 1; i < Math.abs(currentRow - landingRow); i++){
-                if (currentRow>landingRow && currentColumn>landingColumn){
-                    if (document.querySelector("[column=\""+ (currentColumn-i) +"\"][row=\""+ (currentRow-i) +"\"]").innerHTML != "")
+        if (Math.abs(cR - lR) == Math.abs(cC - lC)){
+            for (let i = 1; i < Math.abs(cR - lR); i++){
+                if (cR>lR && cC>lC){
+                    if (selectSquare(cC-i, cR-i).innerHTML != "")
                         return false;
                 }
-                if (currentRow<landingRow && currentColumn<landingColumn){
-                    if (document.querySelector("[column=\""+ (currentColumn+i) +"\"][row=\""+ (currentRow+i) +"\"]").innerHTML != "")
+                if (cR<lR && cC<lC){
+                    if (selectSquare(cC+i, cR+i).innerHTML != "")
                         return false;
                 }
-                if (currentRow<landingRow && currentColumn>landingColumn){
-                    if (document.querySelector("[column=\""+ (currentColumn-i) +"\"][row=\""+ (currentRow+i) +"\"]").innerHTML != "")
+                if (cR<lR && cC>lC){
+                    if (selectSquare(cC-i, cR+i).innerHTML != "")
                         return false;
                 }
-                if (currentRow>landingRow && currentColumn<landingColumn){
-                    if (document.querySelector("[column=\""+ (currentColumn+i) +"\"][row=\""+ (currentRow-i) +"\"]").innerHTML != "")
+                if (cR>lR && cC<lC){
+                    if (selectSquare(cC+i, cR-i).innerHTML != "")
                         return false;
                 }
             }
-            if (landing.innerHTML != "" && selected.firstChild.className == "wq")
-                if (!landing.firstChild.firstChild.className.includes("w"))
-                    return true;
-            if (landing.innerHTML != "" && selected.firstChild.className == "bq")
-                if (landing.firstChild.firstChild.className.includes("w"))
-                    return true;
-            if (landing.innerHTML == "")
-                return true;
+            return true;
         }
-        if (currentRow != landingRow && currentColumn != landingColumn)
+        if (cR != lR && cC != lC)
             return false;
 
-        if (currentColumn == landingColumn)
-            for (let i = 1; i < Math.abs(currentRow - landingRow); i++){
-                if (currentRow>landingRow){
-                    if (document.querySelector("[column=\""+ (currentColumn) +"\"][row=\""+ (currentRow-i) +"\"]").innerHTML != "")
+        if (cC == lC)
+            for (let i = 1; i < Math.abs(cR - lR); i++){
+                if (cR>lR){
+                    if (selectSquare(cC, cR-i).innerHTML != "")
                         return false;
                 }
-                if (currentRow<landingRow){
-                    if (document.querySelector("[column=\""+ (currentColumn) +"\"][row=\""+ (currentRow+i) +"\"]").innerHTML != "")
-                        return false;
-                }
-            }
-        if (currentRow == landingRow)
-            for (let i = 1; i < Math.abs(currentColumn - landingColumn); i++){
-                if (currentColumn>landingColumn){
-                    if (document.querySelector("[column=\""+ (currentColumn-i) +"\"][row=\""+ (currentRow) +"\"]").innerHTML != "")
-                        return false;
-                }
-                if (currentColumn<landingColumn){
-                    if (document.querySelector("[column=\""+ (currentColumn+i) +"\"][row=\""+ (currentRow) +"\"]").innerHTML != "")
+                if (cR<lR){
+                    if (selectSquare(cC, cR+i).innerHTML != "")
                         return false;
                 }
             }
-
-        if (landing.innerHTML != "" && selected.firstChild.className == "wq")
-            if (!landing.firstChild.firstChild.className.includes("w"))
-                return true;
-        if (landing.innerHTML != "" && selected.firstChild.className == "bq")
-            if (landing.firstChild.firstChild.className.includes("w"))
-                return true;
-        if (landing.innerHTML == "")
-            return true;
+        if (cR == lR)
+            for (let i = 1; i < Math.abs(cC - lC); i++){
+                if (cC>lC){
+                    if (selectSquare(cC-i, cR).innerHTML != "")
+                        return false;
+                }
+                if (cC<lC){
+                    if (selectSquare(cC+i, cR).innerHTML != "")
+                        return false;
+                }
+            }
+        return true;
     }
     if (selected.firstChild.className == "wk" || selected.firstChild.className == "bk" )
     {
-        if (Math.abs(currentColumn - landingColumn) == 2 && whiteonmove && cancastle[0][1] && landingRow == 1){
+        if (Math.abs(cC - lC) == 2 && whiteonmove && cancastle[0][1] && lR == 1 && cC == 5){
             whiteonmove = false;
-            if (landingColumn < currentColumn && cancastle[0][0]){
+            if (lC < cC && cancastle[0][0]){
                 let cancontinue = true;
                 for (let i = 1; i < 4; i++)
-                if (document.querySelector(`[column="${currentColumn-i}"][row="1"]`).innerHTML != "")
+                if (selectSquare(cC-i, 1).innerHTML != "")
                 cancontinue = false;
 
                 if (cancontinue && !isCheck()){
-                    document.querySelector(`[column="4"][row="1"]`).innerHTML = selected.outerHTML;
-                    document.querySelector(`[column="5"][row="1"]`).innerHTML = "";
+                    selectSquare(4, 1).innerHTML = selected.outerHTML;
+                    selectSquare(5, 1).innerHTML = "";
                     if (!isCheck()){
                         landing.innerHTML = selected.outerHTML;
-                        document.querySelector(`[column="4"][row="1"]`).innerHTML = "";
+                        selectSquare(4, 1).innerHTML = "";
                         if (!isCheck()){
-                            document.querySelector(`[column="4"][row="1"]`).innerHTML = document.querySelector(`[column="1"][row="1"]`).innerHTML;
-                            document.querySelector(`[column="1"][row="1"]`).innerHTML = "";
-                            reloadPieces()
+                            selectSquare(4, 1).innerHTML = selectSquare(1, 1).innerHTML;
+                            selectSquare(1, 1).innerHTML = "";
+                            reloadPieces();
+                            whiteonmove = true;
                             return true;
                         }else{
                             landing.innerHTML = "";
-                            document.querySelector(`[column="5"][row="1"]`).innerHTML = selected.outerHTML;
+                            selectSquare(5, 1).innerHTML = selected.outerHTML;
                         }
                     }else{
-                        document.querySelector(`[column="5"][row="1"]`).innerHTML = selected.outerHTML;
-                        document.querySelector(`[column="4"][row="1"]`).innerHTML = "";
+                        selectSquare(5, 1).innerHTML = selected.outerHTML;
+                        selectSquare(4, 1).innerHTML = "";
                     }
                     reloadPieces()
                 }
             }
-            if (landingColumn > currentColumn && cancastle[0][2]){
+            if (lC > cC && cancastle[0][2]){
                 let cancontinue = true;
                 for (let i = 1; i < 3; i++)
-                    if (document.querySelector(`[column="${currentColumn+i}"][row="1"]`).innerHTML != "")
+                    if (selectSquare(cC+i, 1).innerHTML != "")
                         cancontinue = false;
 
                 if (cancontinue && !isCheck()){
-                    document.querySelector(`[column="6"][row="1"]`).innerHTML = selected.outerHTML;
-                    document.querySelector(`[column="5"][row="1"]`).innerHTML = "";
+                    selectSquare(6, 1).innerHTML = selected.outerHTML;
+                    selectSquare(5, 1).innerHTML = "";
                     if (!isCheck()){
                         landing.innerHTML = selected.outerHTML;
-                        document.querySelector(`[column="6"][row="1"]`).innerHTML = "";
+                        selectSquare(6, 1).innerHTML = "";
                         if (!isCheck()){
-                            document.querySelector(`[column="6"][row="1"]`).innerHTML = document.querySelector(`[column="8"][row="1"]`).innerHTML;
-                            document.querySelector(`[column="8"][row="1"]`).innerHTML = "";
-                            reloadPieces()
+                            selectSquare(6, 1).innerHTML = selectSquare(8, 1).innerHTML;
+                            selectSquare(8, 1).innerHTML = "";
+                            reloadPieces();
+                            whiteonmove = true;
                             return true;
                         }else{
                             landing.innerHTML = "";
-                            document.querySelector(`[column="5"][row="1"]`).innerHTML = selected.outerHTML;
+                            selectSquare(5, 1).innerHTML = selected.outerHTML;
                         }
                     }else{
-                        document.querySelector(`[column="5"][row="1"]`).innerHTML = selected.outerHTML;
-                        document.querySelector(`[column="6"][row="1"]`).innerHTML = "";
+                        selectSquare(5, 1).innerHTML = selected.outerHTML;
+                        selectSquare(6, 1).innerHTML = "";
                     }
                     reloadPieces()
                 }
             }
             whiteonmove = true;
         }
-        if (Math.abs(currentColumn - landingColumn) == 2 && !whiteonmove && cancastle[1][1] && landingRow == 8){
+        if (Math.abs(cC - lC) == 2 && !whiteonmove && cancastle[1][1] && lR == 8 && cC == 5){
             whiteonmove = true;
-            if (landingColumn < currentColumn && cancastle[1][0]){
+            if (lC < cC && cancastle[1][0]){
                 let cancontinue = true;
                 for (let i = 1; i < 4; i++)
-                    if (document.querySelector(`[column="${currentColumn-i}"][row="8"]`).innerHTML != "")
+                    if (selectSquare(cC-i, 8).innerHTML != "")
                         cancontinue = false;
 
                 if (cancontinue && !isCheck()){
-                    document.querySelector(`[column="4"][row="8"]`).innerHTML = selected.outerHTML;
-                    document.querySelector(`[column="5"][row="8"]`).innerHTML = "";
+                    selectSquare(4, 8).innerHTML = selected.outerHTML;
+                    selectSquare(5, 8).innerHTML = "";
                     if (!isCheck()){
                         landing.innerHTML = selected.outerHTML;
-                        document.querySelector(`[column="4"][row="8"]`).innerHTML = "";
+                        selectSquare(4, 8).innerHTML = "";
                         if (!isCheck()){
-                            document.querySelector(`[column="4"][row="8"]`).innerHTML = document.querySelector(`[column="1"][row="8"]`).innerHTML;
-                            document.querySelector(`[column="1"][row="8"]`).innerHTML = "";
-                            reloadPieces()
+                            selectSquare(4, 8).innerHTML = selectSquare(1, 8).innerHTML;
+                            selectSquare(1, 8).innerHTML = "";
+                            reloadPieces();
+                            whiteonmove = false;
                             return true;
                         }else{
                             landing.innerHTML = "";
-                            document.querySelector(`[column="5"][row="8"]`).innerHTML = selected.outerHTML;
+                            selectSquare(5, 8).innerHTML = selected.outerHTML;
                         }
                     }else{
-                        document.querySelector(`[column="5"][row="8"]`).innerHTML = selected.outerHTML;
-                        document.querySelector(`[column="4"][row="8"]`).innerHTML = "";
+                        selectSquare(5, 8).innerHTML = selected.outerHTML;
+                        selectSquare(4, 8).innerHTML = "";
                     }
                     reloadPieces()
                 }
             }
-            if (landingColumn > currentColumn && cancastle[1][2]){
+            if (lC > cC && cancastle[1][2]){
                 let cancontinue = true;
                 for (let i = 1; i < 3; i++)
-                    if (document.querySelector(`[column="${currentColumn+i}"][row="8"]`).innerHTML != "")
+                    if (selectSquare(cC+i, 8).innerHTML != "")
                         cancontinue = false;
 
                 if (cancontinue && !isCheck()){
-                    document.querySelector(`[column="6"][row="8"]`).innerHTML = selected.outerHTML;
-                    document.querySelector(`[column="5"][row="8"]`).innerHTML = "";
+                    selectSquare(6, 8).innerHTML = selected.outerHTML;
+                    selectSquare(5, 8).innerHTML = "";
                     if (!isCheck()){
                         landing.innerHTML = selected.outerHTML;
-                        document.querySelector(`[column="6"][row="8"]`).innerHTML = "";
+                        selectSquare(6, 8).innerHTML = "";
                         if (!isCheck()){
-                            document.querySelector(`[column="6"][row="8"]`).innerHTML = document.querySelector(`[column="8"][row="8"]`).innerHTML;
-                            document.querySelector(`[column="8"][row="8"]`).innerHTML = "";
-                            reloadPieces()
+                            selectSquare(6, 8).innerHTML = selectSquare(8, 8).innerHTML;
+                            selectSquare(8, 8).innerHTML = "";
+                            reloadPieces();
+                            whiteonmove = false;
                             return true;
                         }else{
                             landing.innerHTML = "";
-                            document.querySelector(`[column="5"][row="8"]`).innerHTML = selected.outerHTML;
+                            selectSquare(5, 8).innerHTML = selected.outerHTML;
                         }
                     }else{
-                        document.querySelector(`[column="5"][row="8"]`).innerHTML = selected.outerHTML;
-                        document.querySelector(`[column="6"][row="8"]`).innerHTML = "";
+                        selectSquare(5, 8).innerHTML = selected.outerHTML;
+                        selectSquare(6, 8).innerHTML = "";
                     }
                     reloadPieces()
                 }
             }
             whiteonmove = false;
         }
-
-        if (Math.abs(currentRow - landingRow) > 1 || Math.abs(currentColumn - landingColumn) > 1)
+        
+        if (Math.abs(cR - lR) > 1 || Math.abs(cC - lC) > 1)
             return false;
-
-        if (landing.innerHTML != "" && selected.firstChild.className == "wk")
-            if (!landing.firstChild.firstChild.className.includes("w"))
-                return true;
-        if (landing.innerHTML != "" && selected.firstChild.className == "bk")
-            if (landing.firstChild.firstChild.className.includes("w"))
-                return true;
-        if (landing.innerHTML == "")
-            return true;
-
+        
+        return true;
     }
     return false;
 }
@@ -349,3 +308,5 @@ function isCheck() {
     }
     return false;
 }
+
+function selectSquare(Column, Row){ return document.querySelector(`[column="${Column}"][row="${Row}"]`);}
