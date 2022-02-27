@@ -1,5 +1,7 @@
 function canPlayMove(selected, landing, moves) {
-    if (whiteonmove && !selected.firstChild.className.includes("w") || !whiteonmove && selected.firstChild.className.includes("w"))
+    const selectedclass = selected.firstChild.className;
+    
+    if (whiteonmove && !selectedclass.includes("w") || !whiteonmove && selectedclass.includes("w"))
         return false;
     if (landing.innerHTML != "")
         if (whiteonmove && landing.firstChild.firstChild.className.includes("w") || !whiteonmove && !landing.firstChild.firstChild.className.includes("w"))
@@ -14,7 +16,7 @@ function canPlayMove(selected, landing, moves) {
     //landing column
     const lC = parseInt(landing.getAttribute("column"));    
 
-    if (selected.firstChild.className == "wp")
+    if (selectedclass == "wp")
     {
         if (lC == cC && landing.innerHTML == ""){
             if (lR == 4 && cR == 2)
@@ -34,7 +36,7 @@ function canPlayMove(selected, landing, moves) {
                     return true;
                 }
     }
-    if (selected.firstChild.className == "bp")
+    if (selectedclass == "bp")
     {
         if (lC == cC && landing.innerHTML == ""){
             if (lR == 5 && cR == 7)
@@ -54,7 +56,7 @@ function canPlayMove(selected, landing, moves) {
                     return true;
                 }
     }
-    if (selected.firstChild.className == "wb" || selected.firstChild.className == "bb" )
+    if (selectedclass == "wb" || selectedclass == "bb" )
     {
         if (Math.abs(cR - lR) == Math.abs(cC - lC)){
             for (let i = 1; i < Math.abs(cR - lR); i++){
@@ -71,11 +73,10 @@ function canPlayMove(selected, landing, moves) {
                     if (selectSquare(cC+i, cR-i).innerHTML != "")
                         return false;
             }
-            if (landing.innerHTML == "")
-                return true;
+            return true;
         }
     }
-    if (selected.firstChild.className == "wr" || selected.firstChild.className == "br" )
+    if (selectedclass == "wr" || selectedclass == "br" )
     {
         if (cR != lR && cC != lC)
             return false;
@@ -100,14 +101,14 @@ function canPlayMove(selected, landing, moves) {
             }
         return true;
     }
-    if (selected.firstChild.className == "wn" || selected.firstChild.className == "bn" )
+    if (selectedclass == "wn" || selectedclass == "bn" )
     {
         if (!((lC == cC+2 || lC == cC-2) && (lR == cR+1 || lR == cR-1) || 
         (lC == cC+1 || lC == cC-1) && (lR == cR+2 || lR == cR-2)))
             return false;
         return true;
     }
-    if (selected.firstChild.className == "wq" || selected.firstChild.className == "bq" )
+    if (selectedclass == "wq" || selectedclass == "bq" )
     {
         if (Math.abs(cR - lR) == Math.abs(cC - lC)){
             for (let i = 1; i < Math.abs(cR - lR); i++){
@@ -157,27 +158,24 @@ function canPlayMove(selected, landing, moves) {
             }
         return true;
     }
-    if (selected.firstChild.className == "wk" || selected.firstChild.className == "bk" )
+    if (selectedclass == "wk" || selectedclass == "bk" )
     {
         if (Math.abs(cC - lC) == 2 && whiteonmove && cancastle[0][1] && lR == 1 && cC == 5){
-            whiteonmove = false;
             if (lC < cC && cancastle[0][0]){
                 let cancontinue = true;
                 for (let i = 1; i < 4; i++)
                 if (selectSquare(cC-i, 1).innerHTML != "")
                 cancontinue = false;
 
-                if (cancontinue && !isCheck()){
+                if (cancontinue && !isCheck(true)){
                     selectSquare(4, 1).innerHTML = selected.outerHTML;
                     selectSquare(5, 1).innerHTML = "";
-                    if (!isCheck()){
+                    if (!isCheck(true)){
                         landing.innerHTML = selected.outerHTML;
                         selectSquare(4, 1).innerHTML = "";
-                        if (!isCheck()){
+                        if (!isCheck(true)){
                             selectSquare(4, 1).innerHTML = selectSquare(1, 1).innerHTML;
                             selectSquare(1, 1).innerHTML = "";
-                            reloadPieces();
-                            whiteonmove = true;
                             return true;
                         }else{
                             landing.innerHTML = "";
@@ -187,7 +185,6 @@ function canPlayMove(selected, landing, moves) {
                         selectSquare(5, 1).innerHTML = selected.outerHTML;
                         selectSquare(4, 1).innerHTML = "";
                     }
-                    reloadPieces()
                 }
             }
             if (lC > cC && cancastle[0][2]){
@@ -196,17 +193,15 @@ function canPlayMove(selected, landing, moves) {
                     if (selectSquare(cC+i, 1).innerHTML != "")
                         cancontinue = false;
 
-                if (cancontinue && !isCheck()){
+                if (cancontinue && !isCheck(true)){
                     selectSquare(6, 1).innerHTML = selected.outerHTML;
                     selectSquare(5, 1).innerHTML = "";
-                    if (!isCheck()){
+                    if (!isCheck(true)){
                         landing.innerHTML = selected.outerHTML;
                         selectSquare(6, 1).innerHTML = "";
-                        if (!isCheck()){
+                        if (!isCheck(true)){
                             selectSquare(6, 1).innerHTML = selectSquare(8, 1).innerHTML;
                             selectSquare(8, 1).innerHTML = "";
-                            reloadPieces();
-                            whiteonmove = true;
                             return true;
                         }else{
                             landing.innerHTML = "";
@@ -216,30 +211,26 @@ function canPlayMove(selected, landing, moves) {
                         selectSquare(5, 1).innerHTML = selected.outerHTML;
                         selectSquare(6, 1).innerHTML = "";
                     }
-                    reloadPieces()
                 }
             }
-            whiteonmove = true;
         }
         if (Math.abs(cC - lC) == 2 && !whiteonmove && cancastle[1][1] && lR == 8 && cC == 5){
-            whiteonmove = true;
             if (lC < cC && cancastle[1][0]){
                 let cancontinue = true;
                 for (let i = 1; i < 4; i++)
                     if (selectSquare(cC-i, 8).innerHTML != "")
                         cancontinue = false;
 
-                if (cancontinue && !isCheck()){
+                if (cancontinue && !isCheck(false)){
                     selectSquare(4, 8).innerHTML = selected.outerHTML;
                     selectSquare(5, 8).innerHTML = "";
-                    if (!isCheck()){
+                    if (!isCheck(false)){
                         landing.innerHTML = selected.outerHTML;
                         selectSquare(4, 8).innerHTML = "";
-                        if (!isCheck()){
+                        if (!isCheck(false)){
                             selectSquare(4, 8).innerHTML = selectSquare(1, 8).innerHTML;
                             selectSquare(1, 8).innerHTML = "";
                             reloadPieces();
-                            whiteonmove = false;
                             return true;
                         }else{
                             landing.innerHTML = "";
@@ -258,17 +249,15 @@ function canPlayMove(selected, landing, moves) {
                     if (selectSquare(cC+i, 8).innerHTML != "")
                         cancontinue = false;
 
-                if (cancontinue && !isCheck()){
+                if (cancontinue && !isCheck(false)){
                     selectSquare(6, 8).innerHTML = selected.outerHTML;
                     selectSquare(5, 8).innerHTML = "";
-                    if (!isCheck()){
+                    if (!isCheck(false)){
                         landing.innerHTML = selected.outerHTML;
                         selectSquare(6, 8).innerHTML = "";
-                        if (!isCheck()){
+                        if (!isCheck(false)){
                             selectSquare(6, 8).innerHTML = selectSquare(8, 8).innerHTML;
                             selectSquare(8, 8).innerHTML = "";
-                            reloadPieces();
-                            whiteonmove = false;
                             return true;
                         }else{
                             landing.innerHTML = "";
@@ -278,10 +267,8 @@ function canPlayMove(selected, landing, moves) {
                         selectSquare(5, 8).innerHTML = selected.outerHTML;
                         selectSquare(6, 8).innerHTML = "";
                     }
-                    reloadPieces()
                 }
             }
-            whiteonmove = false;
         }
         
         if (Math.abs(cR - lR) > 1 || Math.abs(cC - lC) > 1)
@@ -292,21 +279,32 @@ function canPlayMove(selected, landing, moves) {
     return false;
 }
 
-function isCheck() {
+function isCheck(checkwhite) {
+    if (checkwhite === undefined) console.error("undefined value");
+
     const localpieces = document.querySelectorAll(".piece");
     const wk = document.querySelector(".wk").parentElement;
     const bk = document.querySelector(".bk").parentElement;
-
+    let changed = false;
     let king;
-    if (!whiteonmove){
+
+    if (checkwhite){
         king = wk;
     }else king = bk;
-    
-    for (let i = 0; i < localpieces.length; i++){
-        if (canPlayMove(localpieces[i], king.parentElement, moves))
-            return true;
+
+    if (whiteonmove == checkwhite){
+        whiteonmove = !checkwhite;
+        changed = true;
     }
+
+    for (let i = 0; i < localpieces.length; i++){
+        if (canPlayMove(localpieces[i], king.parentElement, moves)){
+            if (changed) whiteonmove = checkwhite;
+            return true;
+        }
+    }
+    if (changed) whiteonmove = checkwhite;
     return false;
 }
 
-function selectSquare(Column, Row){ return document.querySelector(`[column="${Column}"][row="${Row}"]`);}
+function selectSquare(Column, Row){ return document.getElementById(`${Column}${Row}`);}

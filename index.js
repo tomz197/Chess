@@ -72,47 +72,44 @@ function dragDrop () {
         this.innerHTML = "";
         this.append(selectedpiece);
         
-        if (isCheck()){
+        if (isCheck(!whiteonmove)){
             selectedpiece.parentElement.innerHTML = "";
 
             for (let i = 0; i < pieces.length; i++)
-                document.querySelector(`[column="${lastmove[i][0]}"][row="${lastmove[i][1]}"]`).innerHTML = pieces[i].outerHTML;
+            selectSquare(lastmove[i][0], lastmove[i][1]).innerHTML = pieces[i].outerHTML;
             
             whiteonmove = !whiteonmove;
         }else{
             moves.push(addtomoves);
             reloadPieces()
-            whiteonmove = !whiteonmove;        
-            let ischeckmate = isCheck() ? true : false;
-            whiteonmove = !whiteonmove;        
+            let ischeckmate = isCheck(whiteonmove) ? true : false;
             let stalemate = !ischeckmate;
             lastmove = [];
 
             pieces.forEach(piece => lastmove.push([piece.parentElement.getAttribute("column"), piece.parentElement.getAttribute("row")]));
             lastmove.forEach(piece => {
-                let piecesquare = document.querySelector(`[column="${piece[0]}"][row="${piece[1]}"]`);
+                let piecesquare = selectSquare(piece[0], piece[1]);
+                let spiece = selectSquare(piece[0], piece[1]).innerHTML;
                 squares.forEach(square => {
                     if (canPlayMove(piecesquare.firstChild, square, moves)){
-                        square.innerHTML = piecesquare.innerHTML;
+                        square.innerHTML = spiece;
                         piecesquare.innerHTML = "";
-                        
-                        whiteonmove = !whiteonmove;        
-                        if (!isCheck()){
+                        if (!isCheck(whiteonmove)){
                             ischeckmate = false;
                             stalemate = false;
                         }
-                        whiteonmove = !whiteonmove;   
                         
                         square.innerHTML = "";
+                        squares.forEach(x => x.innerHTML = "");
                         for (let i = 0; i < pieces.length; i++)
-                            document.querySelector(`[column="${lastmove[i][0]}"][row="${lastmove[i][1]}"]`).innerHTML = pieces[i].outerHTML;
+                            selectSquare(lastmove[i][0], lastmove[i][1]).innerHTML = pieces[i].outerHTML;
                     }
                 })
             })
-
+            console.log("checkamate: "+ischeckmate);
             switch(selectedpiece.firstChild.className){
                 case "wr":
-                    let rookssquare = document.querySelector(`[column="1"][row="1"]`)
+                    var rookssquare = selectSquare(1, 1);
                     if (rookssquare.innerHTML != ""){
                         if (rookssquare.firstChild.firstChild.className != "wr"){
                             cancastle[0][0] = false;
@@ -120,7 +117,7 @@ function dragDrop () {
                     }else cancastle[0][0] = false;
                     break;
                 case "br":
-                    rookssquare = document.querySelector(`[column="1"][row="8"]`)
+                    rookssquare = selectSquare(1, 8);
                     if (rookssquare.innerHTML != ""){
                         if (rookssquare.firstChild.firstChild.className != "wr"){
                             cancastle[1][0] = false;
