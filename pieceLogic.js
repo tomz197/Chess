@@ -272,9 +272,9 @@ function canPlayMove(selected, landing) {
 function isCheck(checkwhite) {
     if (checkwhite === undefined) console.error('undefined value');
 
-    const localpieces = document.getElementsByClassName('.piece');
-    const wk = document.getElementsByClassName('.wk').parentElement;
-    const bk = document.getElementsByClassName('.bk').parentElement;
+    const localpieces = document.getElementsByClassName('piece');
+    const wk = document.getElementsByClassName('wk')[0].parentElement;
+    const bk = document.getElementsByClassName('bk')[0].parentElement;
     let changed = false;
     let king = checkwhite ? wk : bk;
 
@@ -284,7 +284,7 @@ function isCheck(checkwhite) {
     }
 
     for (let i = 0; i < localpieces.length; i++){
-        if (canPlayMove(localpieces[i], king.parentElement, moves)){
+        if (canPlayMove(localpieces[i], king.parentElement)){
             if (changed) whiteonmove = checkwhite;
             return true;
         }

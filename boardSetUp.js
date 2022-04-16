@@ -3,7 +3,7 @@ const resetButton = document.querySelector("#boardResetButton")
 resetButton.addEventListener("click", FEN)
 
 const FENnotation = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
-//const FENnotation = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQK2R";
+//const FENnotation = "4k3/4q3/8/8/8/8/4Q3/4K3";
 
 window.onload
 
@@ -11,161 +11,80 @@ function FEN() {
     let notation = FENnotation.split("");
     let onSquare = 0;
 
-    squares.forEach(square => {square.innerHTML = "";})
+    squares.forEach(square => square.innerHTML = "")
 
     notation.forEach(x => {
-        if (x == "p")
-        {
-            const piece = document.createElement("div");
-            piece.className = "piece";
-            piece.draggable = true;
-            const whatPiece = document.createElement("div");
-            whatPiece.className = "bp";
-            piece.appendChild(whatPiece);
-            squares[onSquare].appendChild(piece);
-            onSquare++;
-            return;
-        }
-        if (x == "b")
-        {
-            const piece = document.createElement("div");
-            piece.className = "piece";
-            piece.draggable = true;
-            const whatPiece = document.createElement("div");
-            whatPiece.className = "bb";
-            piece.appendChild(whatPiece);
-            squares[onSquare].appendChild(piece);
-            onSquare++;
-            return;
-        }
-        if (x == "n")
-        {
-            const piece = document.createElement("div");
-            piece.className = "piece";
-            piece.draggable = true;
-            const whatPiece = document.createElement("div");
-            whatPiece.className = "bn"
-            piece.appendChild(whatPiece);
-            squares[onSquare].appendChild(piece);
-            onSquare++;
-            return;
-        }
-        if (x == "r")
-        {
-            const piece = document.createElement("div");
-            piece.className = "piece";
-            piece.draggable = true;
-            const whatPiece = document.createElement("div");
-            whatPiece.className = "br"
-            piece.appendChild(whatPiece);
-            squares[onSquare].appendChild(piece);
-            onSquare++;
-            return;
-        }
-        if (x == "q")
-        {
-            const piece = document.createElement("div");
-            piece.className = "piece";
-            piece.draggable = true;
-            const whatPiece = document.createElement("div");
-            whatPiece.className = "bq";
-            piece.appendChild(whatPiece);
-            squares[onSquare].appendChild(piece);
-            onSquare++;
-            return;
-        }
-        if (x == "k")
-        {
-            const piece = document.createElement("div");
-            piece.className = "piece";
-            piece.draggable = true;
-            const whatPiece = document.createElement("div");
-            whatPiece.className = "bk";
-            piece.appendChild(whatPiece);
-            squares[onSquare].appendChild(piece);
-            onSquare++;
-            return;
-        }
+        const piece = document.createElement("div");
+        const whatPiece = document.createElement("div");
+        piece.appendChild(whatPiece);
+        piece.className = "piece";
+        piece.draggable = true;
+        switch (x) {
+            case 'p':
+                whatPiece.className = "bp";
+                squares[onSquare].appendChild(piece);
+                onSquare++;
+                break;
+            case 'b':
+                whatPiece.className = "bb";
+                squares[onSquare].appendChild(piece);
+                onSquare++;
+                break;
+            case 'n':
+                whatPiece.className = "bn"
+                squares[onSquare].appendChild(piece);
+                onSquare++;
+                break;
+            case 'r':
+                whatPiece.className = "br"
+                squares[onSquare].appendChild(piece);
+                onSquare++;
+                break;
+            case 'q':
+                whatPiece.className = "bq";
+                squares[onSquare].appendChild(piece);
+                onSquare++;
+                break;
+            case 'k':
+                whatPiece.className = "bk";
+                squares[onSquare].appendChild(piece);
+                onSquare++;
+                break;
+            case 'P':
+                whatPiece.className = "wp";
+                squares[onSquare].appendChild(piece);
+                onSquare++;
+                break;
+            case 'B':
+                whatPiece.className = "wb";
+                squares[onSquare].appendChild(piece);
+                onSquare++;
+                break;
+            case 'N':
+                whatPiece.className = "wn";
+                squares[onSquare].appendChild(piece);
+                onSquare++;
+                break;
+            case 'R':
+                whatPiece.className = "wr";
+                squares[onSquare].appendChild(piece);
+                onSquare++;
+                break;
+            case 'Q':
+                whatPiece.className = "wq";
+                squares[onSquare].appendChild(piece);
+                onSquare++;
+                break;
+            case 'K':
+                whatPiece.className = "wk";
+                squares[onSquare].appendChild(piece);
+                onSquare++;
+                break;
 
-        if (x == "P")
-        {
-            const piece = document.createElement("div");
-            piece.className = "piece";
-            piece.draggable = true;
-            const whatPiece = document.createElement("div");
-            whatPiece.className = "wp";
-            piece.appendChild(whatPiece);
-            squares[onSquare].appendChild(piece);
-            onSquare++;
-            return;
-        }
-        if (x == "B")
-        {
-            const piece = document.createElement("div");
-            piece.className = "piece";
-            piece.draggable = true;
-            const whatPiece = document.createElement("div");
-            whatPiece.className = "wb";
-            piece.appendChild(whatPiece);
-            squares[onSquare].appendChild(piece);
-            onSquare++;
-            return;
-        }
-        if (x == "N")
-        {
-            const piece = document.createElement("div");
-            piece.className = "piece";
-            piece.draggable = true;
-            const whatPiece = document.createElement("div");
-            whatPiece.className = "wn";
-            piece.appendChild(whatPiece);
-            squares[onSquare].appendChild(piece);
-            onSquare++;
-            return;
-        }
-        if (x == "R")
-        {
-            const piece = document.createElement("div");
-            piece.className = "piece";
-            piece.draggable = true;
-            const whatPiece = document.createElement("div");
-            whatPiece.className = "wr";
-            piece.appendChild(whatPiece);
-            squares[onSquare].appendChild(piece);
-            onSquare++;
-            return;
-        }
-        if (x == "Q")
-        {
-            const piece = document.createElement("div");
-            piece.className = "piece";
-            piece.draggable = true;
-            const whatPiece = document.createElement("div");
-            whatPiece.className = "wq";
-            piece.appendChild(whatPiece);
-            squares[onSquare].appendChild(piece);
-            onSquare++;
-            return;
-        }
-        if (x == "K")
-        {
-            const piece = document.createElement("div");
-            piece.className = "piece";
-            piece.draggable = true;
-            const whatPiece = document.createElement("div");
-            whatPiece.className = "wk";
-            piece.appendChild(whatPiece);
-            squares[onSquare].appendChild(piece);
-            onSquare++;
-            return;
-        }
-
-        if (x == "/")
-        {
-            return;
-        }else{
-            onSquare += parseInt(x);
-            return;
+            case '/':
+                break;
+            default:
+                onSquare += parseInt(x);
         }
     });
     resetBoard();
