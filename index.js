@@ -91,9 +91,7 @@ function dragDrop() {
             let stalemate = !ischeckmate;
 
             lastmove = [];
-            pieces.forEach((piece) =>
-                lastmove.push(piece.parentElement.id.split(""))
-            );
+            pieces.forEach((piece) => lastmove.push(piece.parentElement.id.split("")));
 
             lastmove.forEach((piece) => {
                 let piecesquare = selectSquare(piece[0], piece[1]);
@@ -115,7 +113,8 @@ function dragDrop() {
                     }
                 });
             });
-            console.log("checkamate: " + ischeckmate);
+            ischeckmate && alert("Checkmate");
+            stalemate && stalemate("stalemate");
 
             switch (selectedpiece.firstChild.className) {
                 case "wr":
